@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ชี้เป้าร้านเด็ด Shopee รวม 100 ร้านค้า</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #f7f9fc;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            color: #ee4d2d;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        .header p {
+            color: #666;
+            font-size: 16px;
+        }
+        .tabs {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 30px;
+            background: #fff;
+            color: #555;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            font-family: 'Prompt', sans-serif;
+        }
+        .tab-btn:hover {
+            background: #ffeae5;
+            color: #ee4d2d;
+        }
+        .tab-btn.active {
+            background: #ee4d2d;
+            color: white;
+            box-shadow: 0 4px 12px rgba(238, 77, 45, 0.3);
+        }
+        .content-area {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+        .cat-banner {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            display: none;
+        }
+        .cat-banner.active {
+            display: block;
+        }
+        .shop-grid {
+            display: grid;
+            grid-template-columns: 14fr;
+            gap: 20px;
+        }
+        .shop-card {
+            border-left: 6px solid #ee4d2d;
+            padding: 20px;
+            background: #fafafa;
+            border-radius: 0 12px 12px 0;
+            transition: all 0.2s;
+        }
+        .shop-card:hover {
+            transform: translateX(5px);
+            background: #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        }
+        .shop-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .shop-title {
+            font-size: 19px;
+            font-weight: bold;
+            color: #222;
+            margin: 0;
+        }
+        .stars {
+            color: #f59e0b;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .shop-desc {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+        .shop-link {
+            display: inline-block;
+            text-decoration: none;
+            color: white;
+            background: #ee4d2d;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        .shop-link.secondary {
+            background: #fff;
+            color: #ee4d2d;
+            border: 1px solid #ee4d2d;
+        }
+        .shop-link:hover {
+            background: #d73a1e;
+            color: white;
+        }
+        .shop-link.secondary:hover {
+            background: #ffeae5;
+            color: #ee4d2d;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>🛍️ สารบัญรวมร้านเด็ด Shopee</h1>
+        <p>แยกหมวดหมู่ชัดเจน แนะนำสินค้าน่าซื้อ พร้อมรับข้อเสนอสุดพิเศษ</p>
+    </div>
+
+    <!-- ปุ่มเลือกหมวดหมู่ -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="filterCategory('fashion')">👗 สินค้าแฟชั่น</button>
+        <button class="tab-btn" onclick="filterCategory('living')">📦 ข้าวของเครื่องใช้และอาหาร</button>
+        <button class="tab-btn" onclick="filterCategory('gaming')">🎮 อุปกรณ์เล่นเกมและของสะสม</button>
+        <button class="tab-btn" onclick="filterCategory('electronics')">⚡ อิเล็กทรอนิกส์และยานยนต์</button>
+    </div>
+
+    <div class="content-area">
+        <!-- แบนเนอร์หมวดหมู่ภาพสวยงาม -->
+        <img id="banner-fashion" src="https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=1000&q=80" class="cat-banner active" alt="Fashion">
+        <img id="banner-living" src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1000&q=80" class="cat-banner" alt="Living">
+        <img id="banner-gaming" src="https://images.unsplash.com/photo-1612287230202-1bf1d85d1bdf?auto=format&fit=crop&w=1000&q=80" class="cat-banner" alt="Gaming">
+        <img id="banner-electronics" src="https://images.unsplash.com/photo-1468495244123-6c6c332eeece?auto=format&fit=crop&w=1000&q=80" class="cat-banner" alt="Electronics">
+
+        <!-- จุดที่การ์ดร้านค้าจะมาแสดงผล -->
+        <div class="shop-grid" id="shop-container"></div>
+    </div>
+</div>
+
+<script>
+    // ข้อมูลร้านค้าทั้งหมด 100 ร้านค้าแบบครบถ้วนแยกหมวดหมู่
+    const shopsData = [
+        // === สินค้าแฟชั่น ===
+        { name: "Vivi&Tote", pct: "22%", star: "⭐⭐⭐⭐⭐ 5.0", cat: "fashion", desc: "ร้านกระเป๋าผ้าและกระเป๋าแฟชั่นสไตล์มินิมอล แมทช์ง่ายเข้ากับทุกลุค ราคาเป็นมิตรประมาณ 150-350 บาท", shop: "https://shopee.co.th/shop/1274852624", aff: "https://s.shopee.co.th/3g0lWo6Ac5" },
+        { name: "Rollinstore.bkk", pct: "19%", star: "⭐⭐⭐⭐⭐ 4.9", cat: "fashion", desc: "เสื้อผ้าแฟชั่นสไตล์สตรีทและ Casual ยอดฮิตของวัยรุ่น คัตติ้งสวย ราคาประมาณ 250-600 บาท", shop: "https://shopee.co.th/shop/410701529", aff: "https://s.shopee.co.th/4LGSK23dGP" },
+        { name: "Easy Denim Fashion", pct: "17%", star: "⭐⭐⭐⭐⭐ 4.9", cat: "fashion", desc: "กางเกงยีนส์ทรงสวยหลากสไตล์ ทั้งทรงกระบอกและทรงบอย เนื้อผ้าดีคุ้มราคา ประมาณ 300-650 บาท", shop: "https://shopee.co.th/shop/1633389114", aff: "https://s.shopee.co.th/8Kmb5NoP9Z" },
+        { name: "Character’s", pct: "15%", star: "⭐⭐⭐⭐.5 4.7", cat: "fashion", desc: "เสื้อผ้าพิมพ์ลายการ์ตูนและลายลิขสิทธิ์น่ารักๆ ใส่สบายได้ทุกวัน ราคาประมาณ 180-400 บาท", shop: "https://shopee.co.th/shop/58894090", aff: "https://s.shopee.co.th/2BBxk3Bsfj" },
+        { name: "ฟอ นอ shopping", pct: "13%", star: "⭐⭐⭐⭐.5 4.6", cat: "fashion", desc: "แหล่งรวมเสื้อผ้าแฟชั่นสาวอวบและชุดเดรสดีไซน์สวย พลางหุ่นดีมาก ราคาประมาณ 200-450 บาท", shop: "https://shopee.co.th/shop/36723103", aff: "https://s.shopee.co.th/BQtMNJUjH" },
+        { name: "Cool Girls", pct: "12%", star: "⭐⭐⭐⭐.5 4.7", cat: "fashion", desc: "เสื้อครอปและแฟชั่นสไตล์ Y2K สุดชิคสำหรับสาวๆ สายคอนเทนต์ ราคาเบาๆ เริ่มต้นที่ 100-300 บาท", shop: "https://shopee.co.th/shop/801885622", aff: "https://s.shopee.co.th/6VKwu0vNrs" },
+        { name: "ViSiOn เสื้อผ้าผู้ชาย", pct: "12%", star: "⭐⭐⭐⭐⭐ 4.8", cat: "fashion", desc: "เสื้อยืดโอเวอร์ไซส์และเสื้อเชิ้ตสไตล์เกาหลีสำหรับหนุ่มๆ แมทช์ง่าย ราคาประมาณ 150-350 บาท", shop: "https://shopee.co.th/shop/1681976809", aff: "https://s.shopee.co.th/qga9bGxNL" },
+        { name: "lanfength.th", pct: "12%", star: "⭐⭐⭐⭐ 4.5", cat: "fashion", desc: "ร้านเสื้อผ้าแฟชั่นนำเข้าราคาประหยัด มีแบบใหม่ๆ อัปเดตตลอดเทรนด์ ราคาประมาณ 100-400 บาท", shop: "https://shopee.co.th/shop/1735398124", aff: "https://s.shopee.co.th/6L1Whhw1Ds" },
+        { name: "𝐇𝗂ᑯᑯ𝖾𐓣@𝐂υ𝗍𝖾𝐂υ𝗍𝗂𝖾", pct: "12%", star: "⭐⭐⭐⭐⭐ 4.9", cat: "fashion", desc: "เครื่องประดับน่ารัก กิ๊บติดผม สร้อย และต่างหูสไตล์เกาหลีสุดคิ้วท์ ราคาประหยัด 20-120 บาท", shop: "https://shopee.co.th/shop/33473590", aff: "https://s.shopee.co.th/6Ai6VOweYt" },
+        { name: "LONGCHAMP.", pct: "11%", star: "⭐⭐⭐⭐⭐ 4.8", cat: "fashion", desc: "กระเป๋าแบรนด์เนมยอดฮิตและงานพรีเมียมคุณภาพดี ตอบโจทย์สาวๆ ออฟฟิศ ราคาตามรุ่นสินค้า", shop: "https://shopee.co.th/shop/1782675193", aff: "https://s.shopee.co.th/7pqKUSqJBJ" },
+        { name: "Angelic beauty shop", pct: "9%", star: "⭐⭐⭐⭐.5 4.6", cat: "fashion", desc: "วิกผมแฟชั่น แฮร์พีช และเครื่องประดับผมคุณภาพเนียนเป็นธรรมชาติ ราคาประมาณ 80-250 บาท", shop: "https://shopee.co.th/shop/1749373132", aff: "https://s.shopee.co.th/2g8EKy9yf0" },
+        { name: "Blueberry thailand", pct: "9%", star: "⭐⭐⭐⭐.5 4.7", cat: "fashion", desc: "เสื้อเชิ้ต กางเกงทำงาน และชุดสไตล์เรียบร้อยแต่ดูแพงสำหรับผู้หญิง ราคาประมาณ 250-500 บาท", shop: "https://shopee.co.th/shop/353909752", aff: "https://s.shopee.co.th/5ApZJZ0SaX" },
+        { name: "Selenite.accesories", pct: "13%", star: "⭐⭐⭐⭐⭐ 4.8", cat: "fashion", desc: "เครื่องประดับหินนำโชค หินมงคลแท้ ดีไซน์สวยงามใส่เสริมดวงและแฟชั่น ราคาประมาณ 150-500 บาท", shop: "https://shopee.co.th/shop/114749784", aff: "https://s.shopee.co.th/6L1Whhw1Cr" },
+        { name: "HeavyVintage", pct: "9%", star: "⭐⭐⭐⭐.5 4.6", cat: "fashion", desc: "เสื้อยืดสไตล์วินเทจ ลายวงดนตรีและลายอาร์ตเท่ๆ ผ้าเนื้อดีใส่สบาย ราคาประมาณ 200-400 บาท", shop: "https://shopee.co.th/shop/322790038", aff: "https://s.shopee.co.th/2Voo8fAbzl" },
+        { name: "xutian88hhvn.th", pct: "7%", star: "⭐⭐⭐⭐ 4.4", cat: "fashion", desc: "แหล่งรวมเครื่องแต่งกายและเสื้อผ้าแฟชั่นราคาส่งตรงจากต่างประเทศ ราคาคุ้มค่า 50-200 บาท", shop: "https://shopee.co.th/shop/1618598329", aff: "https://s.shopee.co.th/9ALi4ulESe" },
+        { name: "jnbyea8.th", pct: "7%", star: "⭐⭐⭐⭐ 4.3", cat: "fashion", desc: "หมวกแฟชั่น หมวกแก๊ป และพร็อพแต่งตัวเก๋ๆ สำหรับสายท่องเที่ยว ถ่ายรูปสวย ราคา 100-300 บาท", shop: "https://shopee.co.th/shop/1618441082", aff: "https://s.shopee.co.th/902Hsblrnd" },
+        { name: "dwayne55zl.th", pct: "7%", star: "⭐⭐⭐⭐ 4.4", cat: "fashion", desc: "รองเท้าผ้าใบ รองเท้าลำลองแฟชั่นใส่สบาย ดีไซน์สปอร์ตทันสมัย ราคาประมาณ 200-500 บาท", shop: "https://shopee.co.th/shop/1618437012", aff: "https://s.shopee.co.th/8pirgImV8c" },
+        { name: "lkbennettcj.th", pct: "7%", star: "⭐⭐⭐⭐.5 4.5", cat: "fashion", desc: "ถุงเท้าแฟชั่น ถุงน่อง และเครื่องประดับชิ้นเล็กแต่งลุคให้ดูเต็ม ราคาประหยัด 10-60 บาท", shop: "https://shopee.co.th/shop/1618608550", aff: "https://s.shopee.co.th/8V61Hgnloa" },
+        { name: "umisty6e.th", pct: "7%", star: "⭐⭐⭐⭐ 4.3", cat: "fashion", desc: "ชุดนอนผ้าซาตินนุ่มลื่น และชุดลำลองใส่อยู่บ้านเนื้อผ้าบางเบาสบาย ราคาประมาณ 150-300 บาท", shop: "https://shopee.co.th/shop/1618446117", aff: "https://s.shopee.co.th/9Kf8HDkb7v" },
+        { name: "thickri.th", pct: "4%", star: "⭐⭐⭐⭐ 4.2", cat: "fashion", desc: "เข็มขัดแฟชั่น สายรัด และเนคไทเครื่องประดับครบครันราคาประหยัด ราคาประมาณ 50-150 บาท", shop: "https://shopee.co.th/shop/272836155", aff: "https://s.shopee.co.th/5q5G6mxvEr" },
+        { name: "xixiya024p.th", pct: "7%", star: "⭐⭐⭐⭐ 4.4", cat: "fashion", desc: "แว่นตากันแดดแฟชั่นและกรอบแว่นกรองแสง ถ่ายรูปสวยชิคอินเทรนด์ ราคาประมาณ 80-250 บาท", shop: "https://shopee.co.th/shop/1608628413", aff: "https://s.shopee.co.th/70HDUvtTsC" },
+        { name: "basicBOX", pct: "7%", star: "⭐⭐⭐⭐.5 4.6", cat: "fashion", desc: "เสื้อยืดสีพื้นแนวเบสิค ผ้าเนื้อนุ่มใส่ได้ทั้งชายหญิง แมทช์ง่ายทุกลุค ราคาประมาณ 90-180 บาท", shop: "https://shopee.co.th/shop/1193883709", aff: "https://s.shopee.co.th/6pxnIcu7DD" },
+        { name: "utakabrand", pct: "9%", star: "⭐⭐⭐⭐.5 4.5", cat: "fashion", desc: "รองเท้าแตะแฟชั่นพื้นนุ่ม ดีไซน์เรียบหรูใส่สบายลุยน้ำได้ ราคาประมาณ 100-250 บาท", shop: "https://shopee.co.th/shop/15839940", aff: "https://s.shopee.co.th/1gFh98Dmfd" },
+        { name: "jomaer9v.th", pct: "7%", star: "⭐⭐⭐⭐ 4.4", cat: "fashion", desc: "กระเป๋าเป้สะพายหลัง กระเป๋าเดินทาง และกระเป๋าใส่โน้ตบุ๊กกันน้ำ ราคาประมาณ 200-600 บาท", shop: "https://shopee.co.th/shop/1618438590", aff: "https://s.shopee.co.th/3VhLKV6nx4" },
+        { name: "fixedstaryy.th", pct: "7%", star: "⭐⭐⭐⭐.5 4.5", cat: "fashion", desc: "เครื่องประดับเงินแท้ สร้อยคอ แหวน และกำไลสไตล์มินิมอลเรียบหรู ราคาประมาณ 100-400 บาท", shop: "https://shopee.co.th/shop/1608642810", aff: "https://s.shopee.co.th/4ftIie2MbS" },
+
+        // === ข้าวของเครื่องใช้และอาหาร ===
+        { name: "นัทนันท์ฟาร์มมิ่ง", pct: "22%", star: "⭐⭐⭐⭐⭐ 4.9", cat: "living", desc: "สินค้าเกษตร พันธุ์ไม้ ปุ๋ยอินทรีย์บำรุงดินคุณภาพสูงสำหรับคนรักต้นไม้ ราคาประมาณ 50-300 บาท", shop: "https://shopee.co.th/shop/121419485", aff: "https://s.shopee.co.th/3qKBj75XH6" },
+        { name: "Vitahope Nutrition", pct: "22%", star: "⭐⭐⭐⭐⭐ 4.9", cat: "living", desc: "อาหารเสริมและวิตามินบำรุงร่างกายนำเข้าเกรดพรีเมียม เพื่อสุขภาพที่ดี ราคาประมาณ 300-800 บาท", shop: "https://shopee.co.th/shop/1793187403", aff: "https://s.shopee.co.th/3B4Uvt84d2" },
+        { name: "Mongsil", pct: "22%", star: "⭐⭐⭐⭐⭐ 4.8", cat: "living", desc: "ของตกแต่งบ้าน สไตล์มินิมอล ม่าน โคมไฟ และของใช้น่ารักอารมณ์เกาหลี ราคาประมาณ 100-500 บาท", shop: "https://shopee.co.th/shop/1643531956", aff: "https://s.shopee.co.th/7AadhEsqWC" },
+        { name: "Fresh Girl Glow", pct: "19%", star: "⭐⭐⭐⭐.5 4.7", cat: "living", desc: "บิวตี้และสกินแคร์ บำรุงผิวหน้าให้ชุ่มชื้น ฉ่ำวาว อิ่มน้ำ สุขภาพดี ราคาประมาณ 200-600 บาท", shop: "https://shopee.co.th/shop/1813101499", aff: "https://s.shopee.co.th/2g8EKy9ydz" },
+        { name: "CosmoGlow", pct: "18%", star: "⭐⭐⭐⭐⭐ 4.8", cat: "living", desc: "เครื่องสำอางแบรนด์ดัง บลัชออน ลิปสติก เนื้อเนียน เม็ดสีแน่นติดทน ราคาประมาณ 150-450 บาท", shop: "https://shopee.co.th/shop/1430500440", aff: "https://s.shopee.co.th/60OgJ5xHtq" },
+        { name: "Earth-Tฟาร์มธรรมชาติ", pct: "17%", star: "⭐⭐⭐⭐⭐ 4.9", cat: "living", desc: "ผลผลิตจากฟาร์มธรรมชาติ ผักออร์แกนิกและสินค้าแปรรูปเพื่อสุขภาพ ราคาประมาณ 80-250 บาท", shop: "https://shopee.co.th/shop/1510730112", aff: "https://s.shopee.co.th/6Ai6VOweYt" },
+        { name: "nawafoodshop", pct: "17%", star: "⭐⭐⭐⭐⭐ 4.8", cat: "living", desc: "อาหารแห้ง น้ำพริกรสเด็ด และของทานเล่นพื้นบ้านแซ่บๆ ทานง่าย ราคาประมาณ 50-150 บาท", shop: "https://shopee.co.th/shop/1706113497", aff: "https://s.shopee.co.th/60OgJ5xHsp" },
+        { name: "Chiang Rai loft lift", pct: "17%", star: "⭐⭐⭐⭐.5 4.7", cat: "living", desc: "เมล็ดกาแฟสดคุณภาพจากเชียงราย คั่วใหม่หอมละมุนสำหรับคอกาแฟ ราคาประมาณ 180-400 บาท", shop: "https://shopee.co.th/shop/65147332", aff: "https://s.shopee.co.th/9zup4Ri3lz" },
+        { name: "Panda&Piggy", pct: "17%", star: "⭐⭐⭐⭐.5 4.6", cat: "living", desc: "ของใช้สำหรับแม่และเด็ก ของเล่นเสริมพัฒนาการ ปลอดภัยไร้สารเคมี ราคาประมาณ 100-500 บาท", shop: "https://shopee.co.th/shop/1269752771", aff: "https://s.shopee.co.th/7VDU5qrZrH" },
+        { name: "Prestige Paws", pct: "16%", star: "⭐⭐⭐⭐⭐ 4.8", cat: "living", desc: "อาหารสัตว์เลี้ยง ขนมสุนัขและแมวเกรดพรีเมียม บำรุงขนและสุขภาพ ราคาประมาณ 150-700 บาท", shop: "https://shopee.co.th/shop/783594212", aff: "https://s.shopee.co.th/6feN6JukX9" },
+        { name: "M&G Stationery TH", pct: "15%", star: "⭐⭐⭐⭐⭐ 4.9", cat: "living", desc: "เครื่องเขียนและอุปกรณ์สำนักงานแบรนด์ดัง ปากกา สมุดโน้ต ครบครัน ราคาประหยัด 20-200 บาท", shop: "https://shopee.co.th/shop/1669079824", aff: "https://s.shopee.co.th/9pbOs8ih6y" },
+        { name: "YFDHU", pct: "15%", star: "⭐⭐⭐⭐ 4.5", cat: "living", desc: "ของใช้ในครัวเรือน กล่องจัดระเบียบอาหาร ถ้วยชามเซรามิกดีไซน์เรียบ ราคาประมาณ 40-250 บาท", shop: "https://shopee.co.th/shop/1817571319", aff: "https://s.shopee.co.th/7fWuI9qwWG" },
+        { name: "Enjoy Book", pct: "14%", star: "⭐⭐⭐⭐⭐ 4.8", cat: "living", desc: "ร้านหนังสือออนไลน์ รวมนิยาย วรรณกรรม และหนังสือพัฒนาตนเองส่งไว ราคาประมาณ 150-350 บาท", shop: "https://shopee.co.th/shop/951201556", aff: "https://s.shopee.co.th/3g0lWo6Ad6" },
+        { name: "Forestgarden", pct: "13%", star: "⭐⭐⭐⭐.5 4.7", cat: "living", desc: "ต้นไม้ฟอกอากาศ ต้นไม้จิ๋วตั้งโต๊ะทำงาน และกระถางต้นไม้สวยๆ ราคาประมาณ 50-500 บาท", shop: "https://shopee.co.th/shop/38250170", aff: "https://s.shopee.co.th/4VZsWL2zvQ" },
+        { name: "น้ำตาลเหลวโตนดแท้หอมหวานละมุน", pct: "12%", star: "⭐⭐⭐⭐⭐ 4.9", cat: "living", desc: "น้ำตาลโตนดแท้เมืองเพชร หอมหวานธรรมชาติ ไม่ผสมสารกันเสีย ราคาประมาณ 80-180 บาท", shop: "https://shopee.co.th/shop/132002538", aff: "https://s.shopee.co.th/4qCiux1jFS" },
+        { name: "ข้าวดีตรามีบุญ", pct: "12%", star: "⭐⭐⭐⭐⭐ 4.9", cat: "living", desc: "ข้าวหอมมะลิแท้คัดพิเศษ หุงขึ้นหม้อ นุ่มหอม อร่อยถูกใจทุกมื้อ ราคาประมาณ 150-450 บาท", shop: "https://shopee.co.th/shop/1304537775", aff: "https://s.shopee.co.th/5q5G6mxvDo" },
+        { name: "Mooch Food for Good Mood", pct: "12%", star: "⭐⭐⭐⭐⭐ 4.8", cat: "living", desc: "ขนมคุกกี้ เบเกอรี่อบสดใหม่โฮมเมด ทานเล่นคู่กับชาหรือกาแฟฟินๆ ราคาประมาณ 120-300 บาท", shop: "https://shopee.co.th/shop/1662334575", aff: "https://s.shopee.co.th/8ATAt4p2UY" },
+        { name: "SP Furniture เฟอร์นิเจอร์", pct: "12%", star: "⭐⭐⭐⭐.5 4.6", cat: "living", desc: "โต๊ะ เก้าอี้ทำงาน และเฟอร์นิเจอร์ไม้แต่งบ้าน แข็งแรงประกอบง่าย ราคาประมาณ 500-3,000 บาท", shop: "https://shopee.co.th/shop/84441514", aff: "https://s.shopee.co.th/6VKwu0vNsv" },
+        { name: "พระผงกดมือเนื้อว่าน เทพมหามงคล", pct: "11%", star: "⭐⭐⭐⭐⭐ 4.9", cat: "living", desc: "พระเครื่อง สิ่งศักดิ์สิทธิ์เนื้อว่านแท้ สำหรับบูชาเสริมความเป็นสิริมงคล ราคาตามรุ่นบูชา", shop: "https://shopee.co.th/shop/341512309", aff: "https://s.shopee.co.th/5L8zVrzpEl" },
+        { name: "Muay.shop642", pct: "11%", star: "⭐⭐⭐⭐.5 4.7", cat: "living", desc: "ครีมบำรุงผิวหน้าและผิวกายยี่ห้อดัง เน้นความกระจ่างใส ปลอดภัย ราคาประมาณ 100-350 บาท", shop: "https://shopee.co.th/shop/304159777", aff: "https://s.shopee.co.th/70HDUvtTrB" },
+        { name: "CEO_Shop", pct: "11%", star: "⭐⭐⭐⭐.5 4.6", cat: "living", desc: "ของใช้เบ็ดเตล็ดในบ้าน ทิชชู่ น้ำยาซักผ้า ของใช้ราคาประหยัดเริ่มต้นที่ 30-150 บาท", shop: "https://shopee.co.th/shop/2366559", aff: "https://s.shopee.co.th/8fPRTzn8Tb" },
+        { name: "Mintnishop333", pct: "11%", star: "⭐⭐⭐⭐.5 4.7", cat: "living", desc: "ของกิ๊ฟช็อปน่ารักๆ ของขวัญ และไอเทมแต่งโต๊ะเรียนเพิ่มความสดใส ราคาประมาณ 20-150 บาท", shop: "https://shopee.co.th/shop/648982666", aff: "https://s.shopee.co.th/30l4ja8hz2" },
+        { name: "ทุเรียนเชื่อมระยอง", pct: "11%", star: "⭐⭐⭐⭐⭐ 4.9", cat: "living", desc: "ทุเรียนเชื่อมเนื้อหนึบ ของดีเมืองระยอง หวานพอดี ทานเย็นๆ อร่อยมาก ราคาประมาณ 150-300 บาท", shop: "https://shopee.co.th/shop/1815921428", aff: "https://s.shopee.co.th/3B4Uvt84e5" },
+        { name: "Simply Stamp", pct: "11%", star: "⭐⭐⭐⭐⭐ 4.8", cat: "living", desc: "บริการทำตรายางด่วน ตรายางชื่อ ตรายางบริษัท คมชัดใช้งานง่าย ราคาประมาณ 50-250 บาท", shop: "https://shopee.co.th/shop/134286891", aff: "https://s.shopee.co.th/7AadhEsqXF" },
+        { name: "softbaby_th", pct: "10%", star: "⭐⭐⭐⭐.5 4.7", cat: "living", desc: "ชุดหมีเด็กอ่อน เสื้อผ้าเด็กแรกเกิด ผ้าอ้อม คอตตอนแท้ 100% สัมผัสนุ่ม ราคาประมาณ 80-250 บาท", shop: "https://shopee.co.th/shop/1741814402", aff: "https://s.shopee.co.th/3LNv8C7RI3" },
+        { name: "Merry shine Shop", pct: "10%", star: "⭐⭐⭐⭐.5 4.6", cat: "living", desc: "แชมพูและครีมนวดผมสมุนไพรสูตรลดผมร่วง อ่อนโยนต่อหนังศีรษะ ราคาประมาณ 120-300 บาท", shop: "https://shopee.co.th/shop/309388659", aff: "https://s.shopee.co.th/2qReXH9LJ0" },
+        { name: "Shops_th", pct: "10%", star: "⭐⭐⭐⭐.5 4.5", cat: "living", desc: "รวมของใช้จำเป็นในบ้าน อุปกรณ์ทำความสะอาดครัว ราคาถูกจัดประหยัดงบ ราคา 20-100 บาท", shop: "https://shopee.co.th/shop/93307322", aff: "https://s.shopee.co.th/7pqKUSqJAG" },
+        { name: "Model Home漫5", pct: "10%", star: "⭐⭐⭐⭐.5 4.6", cat: "living", desc: "ผ้าม่านสำเร็จรูป ผ้าปูที่นอน ปลอกหมอนเนื้อผ้านุ่มลื่นกันไรฝุ่น ราคาประมาณ 200-600 บาท", shop: "https://shopee.co.th/shop/987861519", aff: "https://s.shopee.co.th/AUr5fMg9l2" },
+        { name: "Beauty and the Vits", pct: "10%", star: "⭐⭐⭐⭐⭐ 4.8", cat: "living", desc: "วิตามินผิวขาว คอลลาเจนและอาหารเสริมความงามยอดนิยม ของแท้แน่นอน ราคาประมาณ 250-600 บาท", shop: "https://shopee.co.th/shop/31734143", aff: "https://s.shopee.co.th/40dbvQ4txO" },
+        { name: "KM.MTYY 💚", pct: "10%", star: "⭐⭐⭐⭐.5 4.7", cat: "living", desc: "ชาเขียวออร์แกนิก ชาสมุนไพรเพื่อสุขภาพ ดื่มดีท็อกซ์สบายท้อง ราคาประมาณ 100-250 บาท", shop: "https://shopee.co.th/shop/614665623", aff: "https://s.shopee.co.th/5flpuTyYZo" },
+        { name: "ร้านฟ้าค้าป้าย", pct: "9%", star: "⭐⭐⭐⭐⭐ 4.8", cat: "living", desc: "รับทำป้ายไวนิล ป้ายตั้งหน้าร้าน ป้ายของชำร่วย ออกแบบสวยจัดส่งไว ราคาประมาณ 100-400 บาท", shop: "https://shopee.co.th/shop/92861050", aff: "https://s.shopee.co.th/1BJQYDFghN" },
+        { name: "oceanin.th", pct: "9%", star: "⭐⭐⭐⭐ 4.5", cat: "living", desc: "ชั้นวางของในห้องน้ำ กล่องใส่ทิชชู่ และอุปกรณ์จัดระเบียบแนวกันน้ำ ราคาประมาณ 50-200 บาท", shop: "https://shopee.co.th/shop/1261423163", aff: "https://s.shopee.co.th/2qReXH9LK3" },
+        { name: "Ashi shop", pct: "9%", star: "⭐⭐⭐⭐.5 4.6", cat: "living", desc: "น้ำหอมปรับอากาศ แผ่นน้ำหอมแขวนในรถและตู้เสื้อผ้า กลิ่นละมุน ราคาประมาณ 40-150 บาท", shop: "https://shopee.co.th/shop/25598747", aff: "https://s.shopee.co.th/4qCiux1jGV" },
+        { name: "craft.for.u", pct: "9%", star: "⭐⭐⭐⭐.5 4.7", cat: "living", desc: "อุปกรณ์งานฝีมือ ไหมพรมถัก และของตกแต่งงาน DIY น่ารักๆ ทำเพลิน ราคาประมาณ 30-150 บาท", shop: "https://shopee.co.th/shop/357229818", aff: "https://s.shopee.co.th/6feN6JukYA" },
+        { name: "I Love Handmade🎀", pct: "7%", star: "⭐⭐⭐⭐⭐ 4.8", cat: "living", desc: "กิ๊บโบว์ติดผมงานแฮนด์เมดเย็บมือ ปราณีตน่ารักสไตล์ลูกคุณหนู ราคาเริ่มต้นเพียง 15-60 บาท", shop: "https://shopee.co.th/shop/250394149", aff: "https://s.shopee.co.th/5flpuTyYYn" },
+        { name: "kbosshu.th", pct: "7%", star: "⭐⭐⭐⭐ 4.4", cat: "living", desc: "ชั้นวางของอะคริลิก กล่องจัดระเบียบโต๊ะทำงานให้ดูคลีนน่ามอง ราคาประมาณ 60-200 บาท", shop: "https://shopee.co.th/shop/1618438715", aff: "https://s.shopee.co.th/7Ku3tXsDBD" },
+        { name: "บ้านสิบหลังคอฟฟี่", pct: "7%", star: "⭐⭐⭐⭐⭐ 4.8", cat: "living", desc: "เมล็ดกาแฟคั่วบด สูตรพิเศษของทางร้าน รสชาติเข้มสะใจตื่นเต็มตา ราคาประมาณ 150-350 บาท", shop: "https://shopee.co.th/shop/1202886803", aff: "https://s.shopee.co.th/809kglpfpX" },
+        { name: "บ้านสิบหลังคอฟฟี่2", pct: "7%", star: "⭐⭐⭐⭐.5 4.7", cat: "living", desc: "ผงชาไทย ผงโกโก้พรีเมียม เข้มข้นชงดื่มเองหรือทำขายก็คุ้ม ราคาประมาณ 120-300 บาท", shop: "https://shopee.co.th/shop/1763725714", aff: "https://s.shopee.co.th/AAEFGkhQR0" },
+        { name: "DOPAMYNE MATCHA", pct: "7%", star: "⭐⭐⭐⭐⭐ 4.9", cat: "living", desc: "ผงมัทฉะแท้นำเข้าจากญี่ปุ่น เกรดพิธีการ สีเขียวสวย หอมกรุ่นละมุน ราคาประมาณ 250-600 บาท", shop: "https://shopee.co.th/shop/333413468", aff: "https://s.shopee.co.th/LkJYgIrOG" },
+        { name: "MySkyGarden", pct: "7%", star: "⭐⭐⭐⭐.5 4.6", cat: "living", desc: "เมล็ดพันธุ์ดอกไม้ ดินผสมพร้อมปลูก และปุ๋ยบำรุงเร่งดอกกระถางจิ๋ว ราคาประมาณ 20-100 บาท", shop: "https://shopee.co.th/shop/1458509981", aff: "https://s.shopee.co.th/3LNv8C7RJ4" },
+        { name: "Daretry", pct: "7%", star: "⭐⭐⭐⭐.5 4.5", cat: "living", desc: "น้ำยาทำความสะอาดคราบในครัว สเปรย์ขจัดคราบอเนกประสงค์ ราคาประมาณ 80-180 บาท", shop: "https://shopee.co.th/shop/487030416", aff: "https://s.shopee.co.th/50W97G15vU" },
+        { name: "baobaohao", pct: "7%", star: "⭐⭐⭐⭐.5 4.7", cat: "living", desc: "รถเข็นเด็กพับได้ คาร์ซีท และอุปกรณ์การเดินทางปลอดภัยสำหรับลูกน้อย ราคาประมาณ 800-2,500 บาท", shop: "https://shopee.co.th/shop/1745372010", aff: "https://s.shopee.co.th/5L8zVrzpFm" },
+        { name: "CEO อาโปคอฟฟี่", pct: "18%", star: "⭐⭐⭐⭐⭐ 4.9", cat: "living", desc: "กาแฟดริปซองพกพาสะดวก คัดสรรเมล็ดอาราบิก้าเกรดดี หอมฟุ้งตอนเช้า ราคาประมาณ 150-400 บาท", shop: "https://shopee.co.th/shop/1642060912", aff: "https://s.shopee.co.th/7VDU5qrZqE" },
+        { name: "pangkhonpremiumcoffee", pct: "12%", star: "⭐⭐⭐⭐⭐ 4.8", cat: "living", desc: "เมล็ดกาแฟปางขอนแท้จากเชียงราย คั่วเข้ม คั่วกลาง บอดี้แน่นๆ ราคาประมาณ 130-300 บาท", shop: "https://shopee.co.th/shop/1398754751", aff: "https://s.shopee.co.th/3qKBj75XI9" },
+        { name: "gao19081.th", pct: "7%", star: "⭐⭐⭐⭐ 4.4", cat: "living", desc: "ตุ๊กตาเรซิ่นจิ๋วสำหรับแต่งกระถางต้นไม้ อุปกรณ์จัดสวนถาดน่ารัก ราคาประมาณ 10-60 บาท", shop: "https://shopee.co.th/shop/296314591", aff: "https://s.shopee.co.th/30l4ja8hy1" },
+
+        // === อุปกรณ์เล่นเกมและของสะสม ===
+        { name: "ModelSmith", pct: "9%", star: "⭐⭐⭐⭐⭐ 4.8", cat: "gaming", desc: "ร้านโมเดลฟิกเกอร์ ของสะสมอนิเมะ กันดั้ม งานแท้งานละเอียด คอเกมการ์ตูนห้ามพลาด ราคาดี", shop: "https://shopee.co.th/shop/769986302", aff: "https://s.shopee.co.th/4ftIie2MaR" },
+        { name: "0nsks", pct: "11%", star: "⭐⭐⭐⭐.5 4.6", cat: "gaming", desc: "แผ่นรองเมาส์เกมมิ่งไซส์ใหญ่พิเศษ ลายอนิเมะและลายเกมสวยงาม พื้นผิวลื่นไหล ราคา 120-350 บาท", shop: "https://shopee.co.th/shop/1805661532", aff: "https://s.shopee.co.th/AKXfT3gn61" },
+        { name: "g_qz6eks8d", pct: "11%", star: "⭐⭐⭐⭐.5 4.5", cat: "gaming", desc: "สติกเกอร์กันรอย ดีคอลแต่งเคสคอมพิวเตอร์และโน้ตบุ๊ก ลายเกมสุดเท่ ราคาประมาณ 20-80 บาท", shop: "https://shopee.co.th/shop/1765666916", aff: "https://s.shopee.co.th/1LcqkWF3Mc" },
+        { name: "twsdt1h.th", pct: "7%", star: "⭐⭐⭐⭐ 4.4", cat: "gaming", desc: "ปุ่มคีย์แคป (Keycaps) สำหรับ Mechanical Keyboard ลายสวยแปลกตา ราคาประมาณ 200-700 บาท", shop: "https://shopee.co.th/shop/1013028244", aff: "https://s.shopee.co.th/gN9xIHaiI" },
+        { name: "jessada1986", pct: "9%", star: "⭐⭐⭐⭐.5 4.7", cat: "gaming", desc: "การ์ดสะสม ของสะสมวัยรุ่นยุค 90 และการ์ดเกมบอร์ดเกมหายาก ราคาจับต้องได้ 50-500 บาท", shop: "https://shopee.co.th/shop/319995856", aff: "https://s.shopee.co.th/17TA4K84E" },
+        { name: "jhkjtechpd.th", pct: "7%", star: "⭐⭐⭐⭐.5 4.5", cat: "gaming", desc: "ขาตั้งหูฟังเกมมิ่ง ไฟ LED ติดหลังจอแต่งห้องเล่นเกมเพิ่มบรรยากาศ ราคาประมาณ 150-400 บาท", shop: "https://shopee.co.th/shop/627316256", aff: "https://s.shopee.co.th/1qZ7LRD9Lh" },
+        { name: "starboytechnologyzx.th", pct: "7%", star: "⭐⭐⭐⭐.5 4.6", cat: "gaming", desc: "จอยสติ๊กเล่นเกมคอมและมือถือ แผ่นระบายความร้อนสมาร์ทโฟนขณะเล่นเกม ราคา 250-800 บาท", shop: "https://shopee.co.th/shop/1236572537", aff: "https://s.shopee.co.th/5VSPiAzBtm" },
+        { name: "xutian88hhvn.th (กล่องโมเดล)", pct: "7%", star: "⭐⭐⭐⭐ 4.4", cat: "gaming", desc: "กล่องอะคริลิกใสใส่โมเดล ฟิกเกอร์กันฝุ่น มีบันไดวางเรียงสวยงาม ราคาประมาณ 100-400 บาท", shop: "https://shopee.co.th/shop/1618598329", aff: "https://s.shopee.co.th/9ALi4ulESe" },
+        { name: "zshskjlxa9.th", pct: "7%", star: "⭐⭐⭐⭐ 4.3", cat: "gaming", desc: "พวงกุญแจ ของสะสมจากเกมดัง พวงกุญแจอาวุธย่อส่วนสวยงาม ราคาประมาณ 30-90 บาท", shop: "https://shopee.co.th/shop/1608592897", aff: "https://s.shopee.co.th/4LGSK23dHQ" },
+        { name: "supergoodsales5l.th", pct: "7%", star: "⭐⭐⭐⭐ 4.4", cat: "gaming", desc: "หูฟังอินเอียร์เบสแน่นๆ สำหรับเล่นเกม แยกทิศทางเสียงฝีเท้าชัดเจน ราคาประมาณ 150-350 บาท", shop: "https://shopee.co.th/shop/1608647026", aff: "https://s.shopee.co.th/1100LuGK2K" },
+
+        // === อุปกรณ์อิเล็กทรอนิกส์และยานยนต์ ===
+        { name: "MotoGear Pro", pct: "21%", star: "⭐⭐⭐⭐⭐ 4.9", cat: "electronics", desc: "อุปกรณ์ขับขี่มอเตอร์ไซค์ระดับโปร หมวกกันน็อคและเสื้อการ์ด ราคาประมาณ 1,000-5,000 บาท", shop: "https://shopee.co.th/shop/1720124671", aff: "https://s.shopee.co.th/902Hsblroe" },
+        { name: "Pig Motor", pct: "9%", star: "⭐⭐⭐⭐⭐ 4.8", cat: "electronics", desc: "อะไหล่แต่งและอะไหล่ซ่อมบำรุงรถมอเตอร์ไซค์ คุณภาพระดับอู่ซ่อม ราคาประมาณ 50-500 บาท", shop: "https://shopee.co.th/shop/650768011", aff: "https://s.shopee.co.th/1VwGwpEQ0c" },
+        { name: "NN LIGHTING RGB SHOP", pct: "11%", star: "⭐⭐⭐⭐⭐ 4.8", cat: "electronics", desc: "ไฟเส้น LED RGB อัจฉริยะ ควบคุมผ่านแอปและรีโมท เปลี่ยนสีตามจังหวะเพลง ราคา 100-350 บาท", shop: "https://shopee.co.th/shop/405874759", aff: "https://s.shopee.co.th/1LcqkWF3Lb" },
+        { name: "PeetyeeE丨Thailand Branch", pct: "7%", star: "⭐⭐⭐⭐.5 4.5", cat: "electronics", desc: "สายชาร์จเร็ว หัวชาร์จไว Fast Charge ปลอดภัย มีมาตรฐานรองรับ ราคาประมาณ 80-250 บาท", shop: "https://shopee.co.th/shop/1089252836", aff: "https://s.shopee.co.th/5ApZJZ0SZU" },
+        { name: "zzg612034tt.th", pct: "7%", star: "⭐⭐⭐⭐ 4.4", cat: "electronics", desc: "พาวเวอร์แบงค์ความจุสูง ไฟฉายพกพา และอุปกรณ์เสริมมือถือ ราคาประมาณ 200-600 บาท", shop: "https://shopee.co.th/shop/1618552480", aff: "https://s.shopee.co.th/50W97G15uT" },
+        { name: "jinduosm.th", pct: "7%", star: "⭐⭐⭐⭐.5 4.5", cat: "electronics", desc: "เคสมือถือกันกระแทก เคสหูฟังไร้สาย ดีไซน์แฟชั่นทนทาน ราคาประหยัด 40-150 บาท", shop: "https://shopee.co.th/shop/1618703954", aff: "https://s.shopee.co.th/4Ax27j4GbO" },
+        { name: "LET'S GO PARTY", pct: "5%", star: "⭐⭐⭐⭐.5 4.6", cat: "electronics", desc: "ลำโพงบลูทูธพกพา ลำโพงปาร์ตี้เบสหนัก มีไฟเด้งตามจังหวะ ราคาประมาณ 300-1,200 บาท", shop: "https://shopee.co.th/shop/775187205", aff: "https://s.shopee.co.th/40dbvQ4twN" },
+        { name: "AD PART", pct: "12%", star: "⭐⭐⭐⭐.5 4.7", cat: "electronics", desc: "ศูนย์รวมอะไหล่รถยนต์ ผ้าเบรค กรองน้ำมัน และหัวเทียนแท้ ราคามาตรฐานโรงงาน 200-1,500 บาท", shop: "https://shopee.co.th/shop/163129424", aff: "https://s.shopee.co.th/7fWuI9qwVF" },
+        { name: "TK AUTO EXPERT", pct: "12%", star: "⭐⭐⭐⭐⭐ 4.8", cat: "electronics", desc: "กล้องติดรถยนต์ความคมชัดสูง อุปกรณ์ดูแลสีรถและทำความสะอาดรถยนต์ ราคา 500-2,500 บาท", shop: "https://shopee.co.th/shop/120085838", aff: "https://s.shopee.co.th/2LVNwMBFKi" },
+        { name: "B I G  B I R D", pct: "11%", star: "⭐⭐⭐⭐.5 4.7", cat: "electronics", desc: "โคมไฟโซล่าเซลล์ส่องสว่างนอกอาคาร ทนแดดทนฝน ประหยัดพลังงาน ราคาประมาณ 150-600 บาท", shop: "https://shopee.co.th/shop/161277028", aff: "https://s.shopee.co.th/6pxnIcu7CA" },
+        { name: "sijiccjk.th", pct: "7%", star: "⭐⭐⭐⭐ 4.3", cat: "electronics", desc: "ขาตั้งโทรศัพท์มือถือในรถยนต์ แบบยึดกระจกและช่องแอร์ แน่นหนาไม่หลุดง่าย ราคา 50-150 บาท", shop: "https://shopee.co.th/shop/1618683539", aff: "https://s.shopee.co.th/9fHyfpjKRx" },
+        { name: "bakilili8z.th", pct: "7%", star: "⭐⭐⭐⭐ 4.4", cat: "electronics", desc: "เครื่องดูดฝุ่นในรถยนต์ไร้สาย แรงดูดสูง น้ำหนักเบาพกพาสะดวก ราคาประมาณ 250-600 บาท", shop: "https://shopee.co.th/shop/1608685737", aff: "https://s.shopee.co.th/W3jkzIE3J" },
+        { name: "BEST helmet หมวกกันน็อค สาย 1", pct: "7%", star: "⭐⭐⭐⭐⭐ 4.8", cat: "electronics", desc: "หมวกกันน็อคเต็มใบและครึ่งใบ ดีไซน์สวยได้มาตรฐาน มั่นใจทุกการขับขี่ ราคา 200-600 บาท", shop: "https://shopee.co.th/shop/194690879", aff: "https://s.shopee.co.th/1gFh98Dmge" },
+        { name: "feinanmaoyinb.th", pct: "7%", star: "⭐⭐⭐⭐.5 4.5", cat: "electronics", desc: "อะแดปเตอร์แปลงสัญญาณ สาย HDMI สาย LAN และอุปกรณ์เน็ตเวิร์กพื้นฐาน ราคา 50-200 บาท", shop: "https://shopee.co.th/shop/1575693929", aff: "https://s.shopee.co.th/1VwGwpEQ1f" },
+        { name: "kangnaidw.th", pct: "7%", star: "⭐⭐⭐⭐ 4.4", cat: "electronics", desc: "พัดลมพกพาชาร์จแบตได้ ลมแรง พกพาง่ายดับร้อนระหว่างวัน ราคาประมาณ 90-250 บาท", shop: "https://shopee.co.th/shop/1608682368", aff: "https://s.shopee.co.th/3VhLKV6ny7" },
+        { name: "Bicycle Accessories-A1", pct: "7%", star: "⭐⭐⭐⭐.5 4.6", cat: "electronics", desc: "ไฟกระพริบติดจักรยาน หมวกปั่น และอุปกรณ์แต่งจักรยานสายปั่นออกกำลังกาย ราคา 80-350 บาท", shop: "https://shopee.co.th/shop/369646511", aff: "https://s.shopee.co.th/4VZsWL2zwT" },
+        { name: "BBS Official", pct: "7%", star: "⭐⭐⭐⭐.5 4.7", cat: "electronics", desc: "หลอดไฟสมาร์ทโฮม ปลั๊กไฟอัจฉริยะ สั่งการผ่านมือถือและเสียงได้สะดวก ราคา 150-400 บาท", shop: "https://shopee.co.th/shop/907598609", aff: "https://s.shopee.co.th/5VSPiAzBup" },
+        { name: "TimeWalk", pct: "7%", star: "⭐⭐⭐⭐.5 4.6", cat: "electronics", desc: "สมาร์ทวอทช์ราคาประหยัด วัดชีพจร นับก้าวเดิน แจ้งเตือนข้อความภาษาไทย ราคา 450-1500 บาท", shop: "https://shopee.co.th/shop/1782652764", aff: "https://s.shopee.co.th/7Ku3tXsDCE" },
+        { name: "Hikitty.th", pct: "9%", star: "⭐⭐⭐⭐.5 4.5", cat: "electronics", desc: "เคสไอแพด เคสแท็บเล็ต และฟิล์มกระจกนิรภัยกันหน้าจอแตกคุณภาพดี ราคาประมาณ 80-200 บาท", shop: "https://shopee.co.th/shop/410953946", aff: "https://s.shopee.co.th/4Ax27j4GcR" },
+        { name: "KASESTUDiO.th", pct: "6%", star: "⭐⭐⭐⭐.5 4.6", cat: "electronics", desc: "ขาตั้งกล้องขนาดเล็ก เคสกล้องถ่ายรูป และพร็อพสำหรับสายถ่ายภาพ ราคาประมาณ 100-300 บาท", shop: "https://shopee.co.th/shop/1774268554", aff: "https://s.shopee.co.th/9UyYTWjxmw" }
+    ];
+
+    // ฟังก์ชันสร้างและแสดงผลการ์ดร้านค้า
+    function renderShops(filterCat) {
+        const container = document.getElementById('shop-container');
+        container.innerHTML = ''; // เคลียร์หน้าเก่า
+
+        const filtered = shopsData.filter(shop => shop.cat === filterCat);
+
+        filtered.forEach(shop => {
+            const card = document.createElement('div');
+            card.className = 'shop-card';
+            card.innerHTML = `
+                <div class="shop-header">
+                    <h3 class="shop-title">🏪 ร้าน ${shop.name}</h3>
+                    <div class="stars">${shop.star}</div>
+                </div>
+                <p class="shop-desc">"${shop.desc}"</p>
+                <div class="btn-group">
+                    <a href="${shop.aff}" target="_blank" class="shop-link">รับข้อเสนอพิเศษ (${shop.pct})</a>
+                    <a href="${shop.shop}" target="_blank" class="shop-link secondary">หน้าร้านหลัก</a>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    // ฟังก์ชันสลับเมนูหมวดหมู่และแบนเนอร์
+    function filterCategory(catName) {
+        // อัปเดตสถานะปุ่ม
+        const btns = document.getElementsByClassName("tab-btn");
+        for (let btn of btns) {
+            btn.classList.remove("active");
+        }
+        event.currentTarget.classList.add("active");
+
+        // อัปเดตแบนเนอร์
+        const banners = document.getElementsByClassName("cat-banner");
+        for (let banner of banners) {
+            banner.classList.remove("active");
+        }
+        document.getElementById(`banner-${catName}`).classList.add("active");
+
+        // แสดงผลร้านค้าในหมวดหมู่ที่เลือก
+        renderShops(catName);
+    }
+
+    // เรียกแสดงผลเริ่มต้นที่หมวดหมู่แฟชั่น
+    renderShops('fashion');
+</script>
+
+</body>
+</html>
